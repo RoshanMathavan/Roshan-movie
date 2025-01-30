@@ -13,7 +13,7 @@ function HomePage() {
     });
 
     useEffect(() => {
-        axios.get('https://www.omdbapi.com/?apikey=d00527be&type=movie&s=spider')
+        axios.get(`https://www.omdbapi.com/?apikey=${process.env.REACT_APP_OMDB_API_KEY}&type=movie&s=spider`)
             .then(res => {
                 setState(prevState => {
                     return { ...prevState, results: res.data.Search }
@@ -21,16 +21,9 @@ function HomePage() {
             })
             .catch(err => console.log(err));
     }, []);
-
-    const handleInput = (event) => {
-        let search = event.target.value;
-        setState((prevState) => {
-            return { ...prevState, search: search }
-        });
-    }
-
+    
     const openDetails = (id) => {
-        axios.get('https://www.omdbapi.com/?i=' + id + '&apikey=d00527be')
+        axios.get(`https://www.omdbapi.com/?i=${id}&apikey=${process.env.REACT_APP_OMDB_API_KEY}`)
             .then(({ data }) => {
                 setState((prevState) => {
                     return { ...prevState, selected: data }
@@ -38,10 +31,10 @@ function HomePage() {
             })
             .catch(err => console.log(err));
     }
-
+    
     const SearchResult = (event) => {
         if (event.key === 'Enter') {
-            axios.get('https://www.omdbapi.com/?i=tt3896198&apikey=d00527be' + '&s=' + state.search)
+            axios.get(`https://www.omdbapi.com/?i=tt3896198&apikey=${process.env.REACT_APP_OMDB_API_KEY}&s=${state.search}`)
                 .then(res => {
                     setState(prevState => {
                         return { ...prevState, results: res.data.Search }
@@ -50,8 +43,7 @@ function HomePage() {
                 .catch(err => console.log(err));
         }
     }
-
-    const close = () => {
+        const close = () => {
         setState((prevState) => {
             return { ...prevState, selected: {} }
         });
